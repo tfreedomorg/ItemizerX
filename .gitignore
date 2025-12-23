@@ -2,3 +2,11 @@
 *.iml
 .idea/
 target/
+
+# Gradle
+.gradle/
+build/
+!gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+gradle-app.setting

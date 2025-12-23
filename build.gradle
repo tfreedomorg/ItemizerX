@@ -1,0 +1,59 @@
+plugins {
+    id 'java-library'
+    id 'io.papermc.paperweight.userdev' version '2.0.0-beta.19'
+}
+
+group = "me.focusvity"
+version = "1.21.11"
+description = "A rewrite of Itemizer"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        url "https://maven.playpro.com/"
+    }
+}
+
+// Use Mojang mappings for Paper 1.20.5+
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
+
+dependencies {
+    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+    compileOnly("net.coreprotect:coreprotect:22.4")
+    implementation("org.apache.commons:commons-lang3:3.14.0")
+}
+
+tasks.compileJava {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+tasks.javadoc {
+    options.encoding = 'UTF-8'
+}
+
+tasks.processResources {
+    filteringCharset = 'UTF-8'
+    def props = [
+        version: project.version,
+        description: project.description
+    ]
+    inputs.properties(props)
+    filesMatching("plugin.yml") {
+        expand(props)
+    }
+}
+
+tasks.jar {
+    archiveBaseName = "ItemizerX"
+}
+
