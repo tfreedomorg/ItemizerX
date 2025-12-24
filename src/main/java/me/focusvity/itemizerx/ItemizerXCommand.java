@@ -1,17 +1,18 @@
 package me.focusvity.itemizerx;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -590,7 +591,7 @@ public class ItemizerXCommand implements CommandExecutor {
                                 + "&b/itemizer enchant add <&fname&b> <&flevel&b> &c- &6Add an enchant"));
                             return true;
                         }
-                        final Enchantment ench = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(args[2].toLowerCase()));
+                        final Enchantment ench = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(args[2].toLowerCase()));
                         if (ench == null) {
                             sender.sendMessage(colorize("&4The enchantment &f'" + args[2] + "&f' &4does not exist!"));
                             return true;
@@ -605,7 +606,7 @@ public class ItemizerXCommand implements CommandExecutor {
                     }
                     case "remove" -> {
                         if (!sender.hasPermission("itemizer.enchant.remove")) {
-                            sender.sendMessage("&4You don't have permission to use this command!");
+                            sender.sendMessage(colorize("&4You don't have permission to use this command!"));
                             return true;
                         }
                         if (args.length == 2) {
@@ -613,7 +614,7 @@ public class ItemizerXCommand implements CommandExecutor {
                                 + "&b/itemizer enchant remove <&fname&b> &c- &6Remove an enchant"));
                             return true;
                         }
-                        final Enchantment ench = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(args[2].toLowerCase()));
+                        final Enchantment ench = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(args[2].toLowerCase()));
                         if (ench == null) {
                             sender.sendMessage(colorize("&4The enchantment &f'" + args[2] + "&f' &4does not exist!"));
                             return true;
@@ -729,7 +730,7 @@ public class ItemizerXCommand implements CommandExecutor {
                 }
                 final SkullMeta skullMeta = (SkullMeta) meta;
                 assert skullMeta != null;
-                skullMeta.setOwner(name);
+                skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(name));
                 item.setItemMeta(skullMeta);
                 sender.sendMessage(colorize("&2The player of the head has been set to &f'" + name + "&f'"));
                 return true;
